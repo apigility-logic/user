@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
 
 use ZF\OAuth2\Doctrine\Entity\UserInterface;
 use Zend\Stdlib\ArraySerializableInterface;
+use ApigilityLogic\Address\Doctrine\Entity\Address;
 
 /**
  * Class User
@@ -156,9 +157,15 @@ class User implements UserInterface, ArraySerializableInterface
     protected $chinese_zodiac;
 
     /**
+     * 关联的所有地址
+     * @OneToMany(targetEntity="UserAddress", mappedBy="user")
+     */
+    protected $addresses;
+
+    /**
      * 居住地址
      *
-     * @OneToOne(targetEntity="ApigilityAddress\DoctrineEntity\Address")
+     * @OneToOne(targetEntity="ResidenceAddress")
      * @JoinColumn(name="residence_address_id", referencedColumnName="id")
      */
     protected $residence_address;
@@ -166,7 +173,7 @@ class User implements UserInterface, ArraySerializableInterface
     /**
      * 户口地址
      *
-     * @OneToOne(targetEntity="ApigilityAddress\DoctrineEntity\Address")
+     * @OneToOne(targetEntity="CensusRegisterAddress")
      * @JoinColumn(name="census_register_address_id", referencedColumnName="id")
      */
     protected $census_register_address;
@@ -216,6 +223,7 @@ class User implements UserInterface, ArraySerializableInterface
 
     public function __construct()
     {
+        $this->addresses = new ArrayCollection();
         $this->professionalCertifications = new ArrayCollection();
     }
 
